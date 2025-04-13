@@ -1,1 +1,1 @@
-A website for family to save their favorite recipes and plan weekly meals.
+A website for my family to save our favorite recipes and plan weekly meals.
