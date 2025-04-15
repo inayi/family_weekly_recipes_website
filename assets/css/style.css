@@ -1,6 +1,6 @@
-.salmon-img {
+.food-img {
     width: 200px;  /* Set width */
     height: auto;  /* Maintain aspect ratio */
-    border: 5px solid #ff6600; /* Adds an orange border */
+    border: 5px solid lightcoral; /* Adds an orange border */
     border-radius: 10px; /* Softens the edges */
 }
