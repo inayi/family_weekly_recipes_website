@@ -1,6 +1,37 @@
 .food-img {
     width: 200px;  /* Set width */
     height: auto;  /* Maintain aspect ratio */
-    border: 5px solid lightcoral; /* Adds an orange border */
+    border: 2px solid lightcoral; /* Adds an orange border */
     border-radius: 10px; /* Softens the edges */
 }
+
+h1 {
+    color: darkblue;
+}
+
+h2 {
+    color: slateblue;
+}
+
+p {
+    color:blueviolet
+}
+
+body {
+    background-image: url("../images/background.jpg");
+    background-size: cover;
+    position: relative;
+    /*opacity: 0.5;*/
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 192, 203, 0.6); /* White with 60% transparency */
+    z-index: -1;
+  }
+  
