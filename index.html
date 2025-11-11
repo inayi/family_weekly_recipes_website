@@ -2,62 +2,124 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>What's for dinner?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Family recipe vault and weekly meal planner. Save your favorite recipes and plan your weekly meals.">
+    <meta name="keywords" content="recipes, meal planning, family recipes, cooking, meal planner">
+    <title>What's for dinner? - Family Recipe Meal Planner</title>
     <link rel="stylesheet" href="./assets/css/style.css"/>
   </head>
 
   <body>
-    <h1>This week's meal plan</h1>
-    <h2>Monday</h2>
-    <a href="https://cooking.nytimes.com/recipes/1020045-coconut-miso-salmon-curry">Coconut Miso Salmon Curry</a>
-    <br/>
-    <img class="food-img" src="./assets/images/coconut-miso-salmon-curry.jpeg" alt="Salmon"/>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./public/about.html">About</a></li>
+          <li><a href="./public/contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
 
-    <h2>Tuesday</h2>
-    <a href="https://cooking.nytimes.com/recipes/1017359-sheet-pan-chicken-with-potatoes-arugula-and-garlic-yogurt">Sheet-Pan Chicken With Potatoes, Arugula and Garlic Yogurt</a>
-    <br/>
-    <img class="food-img" src="./assets/images/sheetpan-chicken-arugula.webp" alt="Chicken"/>
+    <main class="container">
+      <section aria-labelledby="meal-plan-heading">
+        <h1 id="meal-plan-heading">This Week's Meal Plan</h1>
+        
+        <div class="meal-plan">
+          <article class="meal-day">
+            <h2>Monday</h2>
+            <a href="https://cooking.nytimes.com/recipes/1020045-coconut-miso-salmon-curry" target="_blank" rel="noopener noreferrer">
+              Coconut Miso Salmon Curry
+            </a>
+            <img class="food-img" 
+                 src="./assets/images/coconut-miso-salmon-curry.jpeg" 
+                 alt="Coconut Miso Salmon Curry served in a bowl"/>
+          </article>
 
-    <h2>Wednesday</h2>
-    <p>Dumplings</p>
+          <article class="meal-day">
+            <h2>Tuesday</h2>
+            <a href="https://cooking.nytimes.com/recipes/1017359-sheet-pan-chicken-with-potatoes-arugula-and-garlic-yogurt" target="_blank" rel="noopener noreferrer">
+              Sheet-Pan Chicken With Potatoes, Arugula and Garlic Yogurt
+            </a>
+            <img class="food-img" 
+                 src="./assets/images/sheetpan-chicken-arugula.webp" 
+                 alt="Sheet pan chicken with potatoes, arugula and garlic yogurt"/>
+          </article>
 
-    <h2>Thursday</h2>
-    <p>Salad</p>
+          <article class="meal-day">
+            <h2>Wednesday</h2>
+            <p>Dumplings</p>
+          </article>
 
-    <h2>Friday</h2>
-    <p>TBD</p>
+          <article class="meal-day">
+            <h2>Thursday</h2>
+            <p>Salad</p>
+          </article>
 
-    <h2>Saturday</h2>
-    <p>TBD</p>
+          <article class="meal-day">
+            <h2>Friday</h2>
+            <p>TBD</p>
+          </article>
 
-    <h2>Sunday</h2>
-    <p>TBD</p>
+          <article class="meal-day">
+            <h2>Saturday</h2>
+            <p>TBD</p>
+          </article>
 
-    <hr/>
-    <h1>Our Favorite Recipes</h1>
-    <p>Here are some of our favorite recipes that we love to make at home. They are easy to follow and delicious!</p>
-    <h2>Recipes</h2>
-    <ol>
-      <li><a href="https://cooking.nytimes.com/recipes/1020045-coconut-miso-salmon-curry">Coconut Miso Salmon Curry</a></li>
-      <li><a href="https://cooking.nytimes.com/recipes/1017359-sheet-pan-chicken-with-potatoes-arugula-and-garlic-yogurt">Sheet-Pan Chicken With Potatoes, Arugula and Garlic Yogurt</a></li>
-      <li><a href="https://cooking.nytimes.com/recipes/1020453-crisp-gnocchi-with-brussels-sprouts-and-brown-butter">Crisp Gnocchi With Brussels Sprouts and Brown Butter</a></li>
-      <li><a href="https://cooking.nytimes.com/recipes/1021068-lemony-orzo-with-asparagus-and-garlic-bread-crumbs">Lemony Orzo With Asparagus and Garlic Bread Crumbs</a></li>
-      <li><a href="https://cooking.nytimes.com/recipes/1025510-sticky-miso-salmon-bowl">Sticky Miso Salmon Bowl</a></li>
-      <li><a href="https://cooking.nytimes.com/recipes/1015181-marcella-hazans-bolognese-sauce">Marcella Hazan’s Bolognese Sauce</a></li>
-      <li><a href="https://cooking.nytimes.com/recipes/1025221-roasted-chicken-thighs-with-hot-honey-and-lime">Roasted Chicken Thighs With Hot Honey and Lime</a></li>
-    </ol>
-    
-    <hr/>
-    <ul>
-      <li><a href="./index.html">Home</a></li>
-      <li><a href="./public/about.html">About</a></li>
-      <li><a href="./public/contact.html">Contact</a></li>
-    </ul>
+          <article class="meal-day">
+            <h2>Sunday</h2>
+            <p>TBD</p>
+          </article>
+        </div>
+      </section>
 
-    <hr/>
+      <hr/>
+
+      <section class="recipe-section" aria-labelledby="recipes-heading">
+        <h1 id="recipes-heading">Our Favorite Recipes</h1>
+        <p>Here are some of our favorite recipes that we love to make at home. They are easy to follow and delicious!</p>
+        
+        <ol class="recipe-list">
+          <li>
+            <a href="https://cooking.nytimes.com/recipes/1020045-coconut-miso-salmon-curry" target="_blank" rel="noopener noreferrer">
+              Coconut Miso Salmon Curry
+            </a>
+          </li>
+          <li>
+            <a href="https://cooking.nytimes.com/recipes/1017359-sheet-pan-chicken-with-potatoes-arugula-and-garlic-yogurt" target="_blank" rel="noopener noreferrer">
+              Sheet-Pan Chicken With Potatoes, Arugula and Garlic Yogurt
+            </a>
+          </li>
+          <li>
+            <a href="https://cooking.nytimes.com/recipes/1020453-crisp-gnocchi-with-brussels-sprouts-and-brown-butter" target="_blank" rel="noopener noreferrer">
+              Crisp Gnocchi With Brussels Sprouts and Brown Butter
+            </a>
+          </li>
+          <li>
+            <a href="https://cooking.nytimes.com/recipes/1021068-lemony-orzo-with-asparagus-and-garlic-bread-crumbs" target="_blank" rel="noopener noreferrer">
+              Lemony Orzo With Asparagus and Garlic Bread Crumbs
+            </a>
+          </li>
+          <li>
+            <a href="https://cooking.nytimes.com/recipes/1025510-sticky-miso-salmon-bowl" target="_blank" rel="noopener noreferrer">
+              Sticky Miso Salmon Bowl
+            </a>
+          </li>
+          <li>
+            <a href="https://cooking.nytimes.com/recipes/1015181-marcella-hazans-bolognese-sauce" target="_blank" rel="noopener noreferrer">
+              Marcella Hazan's Bolognese Sauce
+            </a>
+          </li>
+          <li>
+            <a href="https://cooking.nytimes.com/recipes/1025221-roasted-chicken-thighs-with-hot-honey-and-lime" target="_blank" rel="noopener noreferrer">
+              Roasted Chicken Thighs With Hot Honey and Lime
+            </a>
+          </li>
+        </ol>
+      </section>
+    </main>
+
     <footer>
-      <p>&copy; 2025 What's for dinner?</p>
+      <p>&copy; 2025 What's for dinner? - Family Recipe Meal Planner</p>
     </footer>
   </body>
-
 </html>

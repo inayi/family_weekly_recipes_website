@@ -1,27 +1,32 @@
-.food-img {
-    width: 200px;  /* Set width */
-    height: auto;  /* Maintain aspect ratio */
-    border: 2px solid lightcoral; /* Adds an orange border */
-    border-radius: 10px; /* Softens the edges */
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-h1 {
-    color: darkblue;
-}
-
-h2 {
-    color: slateblue;
-}
-
-p {
-    color:blueviolet
+:root {
+    --primary-color: #4a5568;
+    --secondary-color: #667eea;
+    --accent-color: #f56565;
+    --text-color: #2d3748;
+    --bg-color: #f7fafc;
+    --card-bg: #ffffff;
+    --border-color: #e2e8f0;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
     background-image: url("../images/background.jpg");
     background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
     position: relative;
-    /*opacity: 0.5;*/
 }
 
 body::before {
@@ -31,7 +36,301 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 192, 203, 0.6); /* White with 60% transparency */
+    background: rgba(255, 255, 255, 0.85);
     z-index: -1;
-  }
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Header and Navigation */
+header {
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+    padding: 1.5rem 0;
+    margin-bottom: 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+nav a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+}
+
+nav a:hover {
+    color: var(--secondary-color);
+    background: rgba(102, 126, 234, 0.1);
+}
+
+/* Typography */
+h1 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+h2 {
+    color: var(--secondary-color);
+    font-size: 1.75rem;
+    margin: 2rem 0 1rem 0;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.5rem;
+}
+
+h3 {
+    color: var(--primary-color);
+    font-size: 1.25rem;
+    margin: 1rem 0;
+}
+
+p {
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    line-height: 1.8;
+}
+
+/* Meal Plan Section */
+.meal-plan {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.meal-day {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.meal-day:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.meal-day h2 {
+    font-size: 1.5rem;
+    margin: 0 0 1rem 0;
+    border: none;
+    padding: 0;
+    color: var(--secondary-color);
+}
+
+.meal-day a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.75rem;
+    transition: color 0.3s ease;
+}
+
+.meal-day a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+/* Recipe Images */
+.food-img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    margin: 1rem 0;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.food-img:hover {
+    transform: scale(1.05);
+}
+
+/* Recipe List */
+.recipe-section {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: var(--shadow);
+}
+
+.recipe-list {
+    list-style: none;
+    counter-reset: recipe-counter;
+}
+
+.recipe-list li {
+    counter-increment: recipe-counter;
+    background: var(--bg-color);
+    padding: 1rem 1.5rem;
+    margin: 0.75rem 0;
+    border-radius: 8px;
+    border-left: 4px solid var(--secondary-color);
+    transition: all 0.3s ease;
+}
+
+.recipe-list li:hover {
+    background: rgba(102, 126, 234, 0.1);
+    transform: translateX(5px);
+}
+
+.recipe-list li::before {
+    content: counter(recipe-counter);
+    background: var(--secondary-color);
+    color: white;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-weight: bold;
+}
+
+.recipe-list a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.recipe-list a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    background: var(--card-bg);
+    text-align: center;
+    padding: 2rem;
+    margin-top: 3rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.mt-2 {
+    margin-top: 2rem;
+}
+
+.mb-2 {
+    margin-bottom: 2rem;
+}
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border-color);
+    margin: 2rem 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .container {
+        padding: 1rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .meal-plan {
+        grid-template-columns: 1fr;
+    }
+
+    .food-img {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    .meal-day {
+        padding: 1rem;
+    }
+
+    .recipe-section {
+        padding: 1.5rem;
+    }
+}
+
+/* Contact Page Styles */
+.contact-list {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-list li {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: var(--bg-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.contact-list li:hover {
+    background: rgba(102, 126, 234, 0.1);
+    transform: translateX(5px);
+}
+
+.contact-list a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-list a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
   
