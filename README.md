@@ -1,8 +1,9 @@
-# What's for dinner? 🍽️
+# What's for dinner? 🍽️ (Work in Progree)
 
-## A personal project for fun
-
-A website for my family to save our favorite recipes and plan weekly meals.
+## A personal project for learning and having fun 
+A personal project to build a website for my family to save our favorite recipes and plan weekly meals. 
+It’s also a way for me to learn full-stack web development and experiment with new tools. 
+Some of the technologies I’m using might be overkill for this project, but I’m using them as an opportunity to explore and gain experience.
 
 ## Features
 
