@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What's for Dinner?</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- ===== Loading ===== -->
+    <section id="view-loading" class="view">
+      <p class="muted center">Loading…</p>
+    </section>
+
+    <!-- ===== Onboarding: enter name + household PIN (no email, no password) ===== -->
+    <section id="view-onboard" class="view hidden">
+      <div class="card narrow">
+        <h1>What's for Dinner?</h1>
+        <p class="muted">Your shared kitchen. No email, no password — just your name and your kitchen's PIN.</p>
+
+        <label for="display-name">Your name</label>
+        <input id="display-name" type="text" placeholder="Your name" autocomplete="given-name" />
+
+        <div class="split">
+          <div>
+            <h3>Start a new kitchen</h3>
+            <input id="household-name" type="text" placeholder="Our Kitchen" />
+            <button id="btn-create-household" class="primary">Create</button>
+          </div>
+          <div class="or">or</div>
+          <div>
+            <h3>Join your partner's</h3>
+            <input id="invite-code" type="text" inputmode="numeric" placeholder="6-digit PIN" maxlength="6" />
+            <button id="btn-join-household">Join</button>
+          </div>
+        </div>
+        <p id="onboard-msg" class="muted"></p>
+        <p class="center muted" style="margin-top:1rem;"><a href="./help.html">How does this work?</a></p>
+      </div>
+    </section>
+
+    <!-- ===== Main app ===== -->
+    <section id="view-main" class="view hidden">
+      <header class="topbar">
+        <div>
+          <strong id="hh-name"></strong>
+          <span class="muted" id="who"></span>
+        </div>
+        <div class="topbar-actions">
+          <button id="btn-invite" class="ghost" title="Invite your partner">Invite</button>
+          <a href="./help.html" class="muted">How it works</a>
+          <a href="#" id="link-signout-2" class="muted">Switch kitchen</a>
+        </div>
+      </header>
+
+      <nav class="tabs">
+        <button data-tab="week" class="tab active">This Week</button>
+        <button data-tab="list" class="tab">Shopping List</button>
+        <button data-tab="recipes" class="tab">Recipes</button>
+      </nav>
+
+      <!-- Week -->
+      <div id="tab-week" class="tabpanel">
+        <div class="week-head">
+          <button id="week-prev" class="ghost">‹</button>
+          <span id="week-label"></span>
+          <button id="week-next" class="ghost">›</button>
+        </div>
+        <div id="week-grid" class="week-grid"></div>
+        <button id="btn-regen" class="primary wide">↻ Regenerate shopping list from this week</button>
+      </div>
+
+      <!-- List -->
+      <div id="tab-list" class="tabpanel hidden">
+        <div class="add-row">
+          <input id="manual-item" type="text" placeholder="Add an item (e.g. paper towels)" />
+          <button id="btn-add-manual" class="primary">Add</button>
+        </div>
+        <p class="muted" id="list-live-hint">✓ Checking items off updates live for both of you.</p>
+        <div id="shopping-list"></div>
+      </div>
+
+      <!-- Recipes -->
+      <div id="tab-recipes" class="tabpanel hidden">
+        <button id="btn-new-recipe" class="primary">+ New recipe</button>
+        <div id="recipe-list" class="recipe-section-inner"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ===== Modals ===== -->
+  <div id="modal-backdrop" class="modal-backdrop hidden">
+    <!-- Add meal -->
+    <div id="modal-meal" class="modal hidden">
+      <h2>Add dinner — <span id="meal-day-label"></span></h2>
+      <label>Pick a saved recipe</label>
+      <select id="meal-recipe-select"><option value="">— choose —</option></select>
+      <p class="muted center">or</p>
+      <label>Just type it</label>
+      <input id="meal-freetext" type="text" placeholder="Dumplings" />
+      <div class="modal-actions">
+        <button class="ghost" data-close>Cancel</button>
+        <button id="btn-save-meal" class="primary">Add</button>
+      </div>
+    </div>
+
+    <!-- New recipe -->
+    <div id="modal-recipe" class="modal hidden">
+      <h2>New recipe</h2>
+      <label>Title</label>
+      <input id="recipe-title" type="text" placeholder="Coconut Miso Salmon Curry" />
+      <label>Source link (optional — we save the link, not their content)</label>
+      <input id="recipe-url" type="url" placeholder="https://cooking.nytimes.com/..." />
+      <label>Ingredients (one per line: <span class="muted">qty unit name</span> — e.g. "2 onion", "1 tbsp soy sauce", "salmon")</label>
+      <textarea id="recipe-ingredients" rows="8" placeholder="2 onion&#10;1 tbsp soy sauce&#10;salmon"></textarea>
+      <div class="modal-actions">
+        <button class="ghost" data-close>Cancel</button>
+        <button id="btn-save-recipe" class="primary">Save recipe</button>
+      </div>
+    </div>
+
+    <!-- Invite -->
+    <div id="modal-invite" class="modal hidden">
+      <h2>Invite your partner</h2>
+      <p class="muted">Have them open the app, enter their name, choose "Join your partner's", and enter this PIN:</p>
+      <p class="invite-code" id="invite-code-display">------</p>
+      <div class="modal-actions">
+        <button class="primary" data-close>Done</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

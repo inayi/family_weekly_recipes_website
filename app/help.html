@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How it works — What's for Dinner?</title>
+  <link rel="stylesheet" href="./style.css" />
+  <style>
+    .help { max-width: 700px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+    .help h2 { color: var(--secondary-color); margin: 2rem 0 .6rem; border-bottom: 2px solid var(--border-color); padding-bottom: .4rem; }
+    .help h2:first-of-type { margin-top: .5rem; }
+    .help p, .help li { color: var(--text-color); }
+    .help ol, .help ul { margin: .5rem 0 .5rem 1.4rem; }
+    .help li { margin-bottom: .5rem; }
+    .step-card { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow); padding: 1.2rem 1.4rem; margin-bottom: 1rem; }
+    .step-card b { color: var(--primary-color); }
+    .back-link { display: inline-block; margin-bottom: 1rem; }
+    .kbd { background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 6px; padding: .1rem .5rem; font-family: monospace; }
+    .faq summary { cursor: pointer; font-weight: 600; color: var(--primary-color); padding: .6rem 0; }
+    .faq { border-bottom: 1px solid var(--border-color); }
+    .report-btn {
+      display: inline-block; margin-top: .6rem; padding: .6rem 1rem; border-radius: 8px;
+      background: var(--secondary-color); color: #fff !important; text-decoration: none; font-weight: 600;
+    }
+    .report-btn:hover { background: var(--accent-color); }
+  </style>
+</head>
+<body>
+  <header class="topbar" style="position:static; margin:0;">
+    <div><strong>What's for Dinner?</strong></div>
+    <div class="topbar-actions"><a href="./index.html">← Back to app</a></div>
+  </header>
+
+  <main class="help">
+    <h1>How it works</h1>
+    <p class="muted center">A shared weekly meal plan and shopping list for two people who don't have time to sync every day.</p>
+
+    <h2>Getting in — no email, no password</h2>
+    <div class="step-card">
+      <p><b>1. Type your name.</b> That's how your partner will see who added or bought what.</p>
+      <p><b>2. First person:</b> click <b>Create</b> to start your kitchen. You'll get a 6-digit PIN.</p>
+      <p><b>3. Second person:</b> click <b>Join your partner's</b>, enter that PIN.</p>
+      <p class="muted">That's it — no account, no verification email. The app remembers you on this device after that.</p>
+    </div>
+
+    <h2>This Week tab</h2>
+    <ul>
+      <li>Each day is a card. Tap <b>+ add dinner</b> to plan it — either pick a recipe you've saved, or just type something like "Dumplings."</li>
+      <li>Use <b>‹ ›</b> to look at last week or next week.</li>
+      <li>Tap the <b>✕</b> on a planned meal to remove it.</li>
+      <li>Whoever adds a meal, the other person sees it appear automatically — no need to tell each other.</li>
+    </ul>
+
+    <h2>Shopping List tab</h2>
+    <ul>
+      <li>Click <b>↻ Regenerate shopping list</b> (on the This Week tab) to pull in ingredients from every recipe planned that week — duplicate ingredients are automatically combined into one line.</li>
+      <li>You can also add anything manually (like paper towels) directly in the list.</li>
+      <li><b>The important part:</b> when either of you checks an item off while actually at the store, it checks off on the other person's phone too, within a second or two — so you never both buy the same thing.</li>
+      <li>Items are grouped by aisle (Produce, Meat & Seafood, Dairy & Eggs, Pantry, Frozen, Other) to make shopping faster.</li>
+    </ul>
+
+    <h2>Recipes tab</h2>
+    <ul>
+      <li>Click <b>+ New recipe</b> to save one. Give it a title, and optionally a link back to the original source (like an NYT Cooking recipe) — we only store the link, never copy their text or photos.</li>
+      <li>List ingredients one per line, e.g.:
+        <pre class="kbd">2 onion
+1 tbsp soy sauce
+salmon</pre>
+        Quantity and unit are optional — "salmon" alone works fine.
+      </li>
+      <li>Once saved, that recipe shows up in the picker when you add a dinner to a day, and its ingredients will flow into the shopping list.</li>
+    </ul>
+
+    <h2>Inviting your partner later</h2>
+    <p>Click <b>Invite</b> in the top bar any time to see your kitchen's PIN again.</p>
+
+    <h2>Frequently asked</h2>
+    <details class="faq">
+      <summary>Do I need to make an account?</summary>
+      <p>No. Just a name and a PIN, once per device. There's no password to remember or lose.</p>
+    </details>
+    <details class="faq">
+      <summary>What if I switch phones or clear my browser?</summary>
+      <p>Click <b>Switch kitchen</b> in the top bar, then rejoin using your kitchen's PIN (ask your partner, or whoever set it up, to check the Invite screen).</p>
+    </details>
+    <details class="faq">
+      <summary>Can more than 2 people join a kitchen?</summary>
+      <p>Yes — anyone with the PIN can join. It's built for a couple, but nothing stops a third person (e.g. a roommate or family member) from joining the same kitchen.</p>
+    </details>
+    <details class="faq">
+      <summary>Will this import my saved recipes from a site like NYT Cooking?</summary>
+      <p>Not automatically — we deliberately don't scrape recipe sites (it's against their terms and can cross into copyright issues). Save the link plus your own written ingredients/notes instead.</p>
+    </details>
+    <details class="faq">
+      <summary>Something looks wrong or stuck.</summary>
+      <p>Try reloading the page first. If it still looks off, describe what happened below — it's sent straight through, no email needed.</p>
+      <div id="report-form">
+        <label for="report-message">What were you doing, and what went wrong?</label>
+        <textarea id="report-message" rows="4" placeholder="e.g. I tapped Regenerate shopping list and nothing happened…"></textarea>
+        <button id="report-submit" class="primary" style="margin-top:.6rem;">Send report</button>
+        <p id="report-status" class="muted" style="margin-top:.4rem;"></p>
+      </div>
+    </details>
+
+    <p class="center muted" style="margin-top:2rem;"><a href="./index.html">← Back to the app</a></p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script>
+    // Reports are written straight to a Supabase table (issue_reports).
+    // No email address is ever present in this page — you read reports later
+    // from the Supabase dashboard, which is the only place with read access.
+    const statusEl = document.getElementById("report-status");
+    const btn = document.getElementById("report-submit");
+
+    if (window.APP_CONFIG && window.APP_CONFIG.SUPABASE_URL) {
+      const sb = supabase.createClient(window.APP_CONFIG.SUPABASE_URL, window.APP_CONFIG.SUPABASE_ANON_KEY);
+
+      btn.addEventListener("click", async () => {
+        const message = document.getElementById("report-message").value.trim();
+        if (!message) { statusEl.textContent = "Please describe what happened first."; return; }
+        btn.disabled = true;
+        statusEl.textContent = "Sending…";
+
+        // Make sure we have a session (works even if they've never joined a
+        // kitchen — anonymous sign-in only, same as the main app).
+        let { data: sessionData } = await sb.auth.getSession();
+        if (!sessionData.session) {
+          const { data: signIn, error: authErr } = await sb.auth.signInAnonymously();
+          if (authErr) { statusEl.textContent = "Couldn't send — try again later."; btn.disabled = false; return; }
+          sessionData = { session: signIn.session };
+        }
+
+        // Best-effort: attach who's reporting, if this device already joined a kitchen.
+        let reporterName = null, householdId = null;
+        const { data: mem } = await sb.from("members").select("display_name,household_id")
+          .eq("user_id", sessionData.session.user.id).limit(1).maybeSingle();
+        if (mem) { reporterName = mem.display_name; householdId = mem.household_id; }
+
+        const { error } = await sb.from("issue_reports").insert({
+          message, reporter: reporterName, household_id: householdId, page: document.referrer || null,
+        });
+        if (error) { statusEl.textContent = "Couldn't send — try again later."; btn.disabled = false; return; }
+        statusEl.textContent = "Sent — thank you!";
+        document.getElementById("report-message").value = "";
+        btn.disabled = false;
+      });
+    } else {
+      btn.disabled = true;
+      statusEl.textContent = "Reporting isn't set up yet.";
+    }
+  </script>
+</body>
+</html>
