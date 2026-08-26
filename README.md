@@ -1,4 +1,4 @@
-# What's for dinner? 🍽️ (Work in Progree)
+# What's for dinner? 🍽️ (Work in Progress)
 
 ## A personal project for learning and having fun 
 A personal project to build a website for my family to save our favorite recipes and plan weekly meals. 
