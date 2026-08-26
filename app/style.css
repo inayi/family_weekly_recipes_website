@@ -141,3 +141,7 @@ button:active { transform: translateY(1px); }
   font-size: 2.2rem; letter-spacing: .3em; text-align: center; font-weight: 800;
   color: var(--secondary-color); background: var(--bg-color); border-radius: 10px; padding: 1rem; margin-top: .5rem;
 }
+.invite-share-row { display: flex; gap: .6rem; margin-top: .8rem; }
+.invite-share-row button, .invite-share-row a {
+  flex: 1; text-align: center; text-decoration: none; color: var(--primary-color);
+}

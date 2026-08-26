@@ -99,7 +99,9 @@ $("btn-create-household").addEventListener("click", async () => {
   if (!displayName) return ($("onboard-msg").textContent = "Please add your name first.");
   $("onboard-msg").textContent = "Creating…";
 
-  const session = await ensureAnonSession();
+  let session;
+  try { session = await ensureAnonSession(); }
+  catch (e) { return ($("onboard-msg").textContent = "Couldn't sign in (" + e.message + "). Is anonymous sign-in enabled in Supabase?"); }
   state.user = session.user;
 
   const pin = randPin();
@@ -113,13 +115,15 @@ $("btn-create-household").addEventListener("click", async () => {
 });
 
 $("btn-join-household").addEventListener("click", async () => {
-  const pin = $("invite-code").value.trim();
+  const pin = $("invite-code").value.replace(/\D/g, ""); // strip spaces/dashes/anything non-digit
   const displayName = $("display-name").value.trim();
   if (!displayName) return ($("onboard-msg").textContent = "Please add your name first.");
-  if (!/^\d{6}$/.test(pin)) return ($("onboard-msg").textContent = "Enter the 6-digit PIN from your partner.");
+  if (!/^\d{6}$/.test(pin)) return ($("onboard-msg").textContent = "Enter the 6-digit PIN from your partner (numbers only).");
   $("onboard-msg").textContent = "Joining…";
 
-  const session = await ensureAnonSession();
+  let session;
+  try { session = await ensureAnonSession(); }
+  catch (e) { return ($("onboard-msg").textContent = "Couldn't sign in (" + e.message + "). Is anonymous sign-in enabled in Supabase?"); }
   state.user = session.user;
 
   const { data: hh, error } = await sb.from("households").select("*").eq("invite_code", pin).maybeSingle();
@@ -383,10 +387,43 @@ $("btn-regen").addEventListener("click", async () => {
 });
 
 // ----- Invite -----
+function inviteText() {
+  const url = window.location.origin + window.location.pathname;
+  const pin = state.household.invite_code;
+  return `Join our kitchen on What's for Dinner: ${url}\nWhen it asks for a PIN, enter: ${pin}`;
+}
+
 $("btn-invite").addEventListener("click", () => {
   $("invite-code-display").textContent = state.household.invite_code;
+  $("invite-copy-msg").textContent = "";
+
+  const text = inviteText();
+  $("btn-invite-email").href = "mailto:?subject=" + encodeURIComponent("Join our kitchen") + "&body=" + encodeURIComponent(text);
+  $("btn-invite-sms").href = "sms:?body=" + encodeURIComponent(text);
+
   openModal("modal-invite");
 });
+
+$("btn-invite-share").addEventListener("click", async () => {
+  const text = inviteText();
+  if (navigator.share) {
+    try { await navigator.share({ title: "Join our kitchen", text }); }
+    catch {} // user cancelled — not an error
+  } else {
+    await copyInviteText(text);
+  }
+});
+
+$("btn-invite-copy").addEventListener("click", () => copyInviteText(inviteText()));
+
+async function copyInviteText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    $("invite-copy-msg").textContent = "Copied! Paste it wherever you like.";
+  } catch {
+    $("invite-copy-msg").textContent = "Couldn't copy automatically — select the PIN above and copy it manually.";
+  }
+}
 
 // =========================================================================
 //  Realtime — the anti-double-buying magic
