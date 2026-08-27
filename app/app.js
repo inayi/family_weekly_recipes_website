@@ -366,10 +366,11 @@ function renderItem(it, memberNames) {
       bought_by: bought ? state.member.id : null,
       bought_at: bought ? new Date().toISOString() : null,
     }).eq("id", it.id);
-    // realtime will refresh both clients
+    renderShoppingList(); // don't wait on realtime for our own action; it still syncs the partner's screen
   });
   el(".chip-x", row).addEventListener("click", async () => {
     await sb.from("shopping_list_items").delete().eq("id", it.id);
+    renderShoppingList();
   });
   return row;
 }
@@ -383,6 +384,7 @@ async function addManual() {
     household_id: state.household.id, name: name.toLowerCase(),
     category: guessCategory(name), source: "manual",
   });
+  renderShoppingList();
 }
 
 // Regenerate recipe-sourced items from this week's plan (client-side dedupe)
@@ -397,9 +399,12 @@ $("btn-regen").addEventListener("click", async () => {
 
   const { data: ings } = await sb.from("recipe_ingredients").select("*").in("recipe_id", recipeIds);
 
-  // merge by name + unit
+  // merge by name + unit — also filters out non-ingredient junk (e.g. "yield",
+  // "2-4 servings") that may have been saved before this filter existed
   const merged = {};
-  (ings || []).forEach((i) => {
+  (ings || [])
+    .filter((i) => !NON_INGREDIENT_LINE.test(i.name) && !SERVINGS_RANGE.test(i.name))
+    .forEach((i) => {
     const key = i.name + "|" + (i.unit || "");
     if (!merged[key]) merged[key] = { name: i.name, unit: i.unit, category: i.category || "other", quantity: 0, anyQty: false };
     if (i.quantity != null) { merged[key].quantity += Number(i.quantity); merged[key].anyQty = true; }
