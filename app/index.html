@@ -93,7 +93,14 @@
   <div id="modal-backdrop" class="modal-backdrop hidden">
     <!-- Add meal -->
     <div id="modal-meal" class="modal hidden">
-      <h2>Add dinner — <span id="meal-day-label"></span></h2>
+      <h2>Add a meal — <span id="meal-day-label"></span></h2>
+      <label>Meal</label>
+      <select id="meal-type-select">
+        <option value="breakfast">Breakfast</option>
+        <option value="lunch">Lunch</option>
+        <option value="dinner" selected>Dinner</option>
+        <option value="snack">Snack</option>
+      </select>
       <label>Pick a saved recipe</label>
       <select id="meal-recipe-select"><option value="">— choose —</option></select>
       <p class="muted center">or</p>

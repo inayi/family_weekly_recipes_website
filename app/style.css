@@ -102,6 +102,17 @@ button:active { transform: translateY(1px); }
 .day .meal a:hover { color: var(--accent-color); text-decoration: underline; }
 .day .add { color: var(--primary-color); opacity: .55; font-style: italic; cursor: pointer; }
 .chip-x { color: var(--primary-color); opacity: .5; border: none; background: none; padding: .2rem .4rem; }
+
+.meal-row { display: flex; align-items: center; gap: .6rem; }
+.meal-type {
+  font-size: .68rem; text-transform: uppercase; letter-spacing: .03em; font-weight: 700;
+  color: var(--secondary-color); opacity: .75; min-width: 4.2rem; flex: none;
+}
+.add-more-meal {
+  align-self: flex-start; border: none; background: none; padding: .3rem 0 0;
+  color: var(--secondary-color); opacity: .7; font-size: .8rem; font-weight: 600;
+}
+.add-more-meal:hover { opacity: 1; text-decoration: underline; }
 .chip-x:hover { opacity: 1; color: var(--accent-color); }
 
 /* Shopping list */

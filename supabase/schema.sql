@@ -46,11 +46,15 @@ create table if not exists meal_plan_entries (
   id           uuid primary key default gen_random_uuid(),
   household_id uuid not null references households(id) on delete cascade,
   date         date not null,
+  meal_type    text not null default 'dinner',  -- 'breakfast' | 'lunch' | 'dinner' | 'snack'
   recipe_id    uuid references recipes(id) on delete set null,
   freetext     text,
   added_by     uuid references members(id) on delete set null,
   created_at   timestamptz not null default now()
 );
+
+-- Safe to re-run on an existing database that predates meal_type:
+alter table meal_plan_entries add column if not exists meal_type text not null default 'dinner';
 
 create table if not exists shopping_list_items (
   id           uuid primary key default gen_random_uuid(),

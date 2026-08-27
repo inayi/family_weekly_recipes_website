@@ -162,6 +162,9 @@ document.querySelectorAll(".tab").forEach((t) =>
 $("week-prev").addEventListener("click", () => { state.weekStart = addDays(state.weekStart, -7); renderWeek(); });
 $("week-next").addEventListener("click", () => { state.weekStart = addDays(state.weekStart, 7); renderWeek(); });
 
+const MEAL_TYPES = ["breakfast", "lunch", "dinner", "snack"];
+const MEAL_LABEL = { breakfast: "Breakfast", lunch: "Lunch", dinner: "Dinner", snack: "Snack" };
+
 async function renderWeek() {
   const start = state.weekStart, end = addDays(start, 6);
   $("week-label").textContent = fmtRange(start, end);
@@ -172,50 +175,72 @@ async function renderWeek() {
     .eq("household_id", state.household.id)
     .gte("date", isoDate(start)).lte("date", isoDate(end));
 
+  // group by date, then by meal type — a day can have several meals now
   const byDate = {};
-  (entries || []).forEach((e) => (byDate[e.date] = e));
+  (entries || []).forEach((e) => {
+    (byDate[e.date] ??= {})[e.meal_type || "dinner"] = e;
+  });
 
   const todayIso = isoDate(new Date());
   const grid = $("week-grid");
   grid.innerHTML = "";
   for (let i = 0; i < 7; i++) {
-    const d = addDays(start, i), iso = isoDate(d), entry = byDate[iso];
+    const d = addDays(start, i), iso = isoDate(d);
+    const dayEntries = byDate[iso] || {};
     const row = document.createElement("div");
     row.className = "day" + (iso === todayIso ? " today" : "");
 
-    let mealHtml;
-    if (entry) {
-      const title = entry.recipe ? entry.recipe.title : entry.freetext;
-      const link = entry.recipe?.source_url
-        ? `<a href="${entry.recipe.source_url}" target="_blank" rel="noopener">${esc(title)}</a>`
-        : esc(title);
-      mealHtml = `<div class="meal">${link}</div><button class="chip-x" data-del="${entry.id}">✕</button>`;
-    } else {
-      mealHtml = `<div class="meal add">+ add dinner</div>`;
-    }
-    row.innerHTML =
-      `<div class="daylabel">${DAYS[i]}<small>${d.toLocaleDateString(undefined, { month: "short", day: "numeric" })}</small></div>` +
-      mealHtml;
+    row.innerHTML = `<div class="daylabel">${DAYS[i]}<small>${d.toLocaleDateString(undefined, { month: "short", day: "numeric" })}</small></div>`;
 
-    if (entry) {
-      el(".chip-x", row).addEventListener("click", async (ev) => {
-        ev.stopPropagation();
-        await sb.from("meal_plan_entries").delete().eq("id", entry.id);
-        renderWeek();
-      });
-    } else {
-      el(".meal", row).addEventListener("click", () => openMealModal(iso, DAYS[i]));
+    // Always show dinner (even empty, so it's the default one-tap add).
+    // Only show breakfast/lunch/snack rows that already have something planned.
+    const typesToShow = MEAL_TYPES.filter((t) => t === "dinner" || dayEntries[t]);
+
+    typesToShow.forEach((type) => {
+      const entry = dayEntries[type];
+      const mealRow = document.createElement("div");
+      mealRow.className = "meal-row";
+      if (entry) {
+        const title = entry.recipe ? entry.recipe.title : entry.freetext;
+        const link = entry.recipe?.source_url
+          ? `<a href="${entry.recipe.source_url}" target="_blank" rel="noopener">${esc(title)}</a>`
+          : esc(title);
+        mealRow.innerHTML =
+          `<span class="meal-type">${MEAL_LABEL[type]}</span>` +
+          `<div class="meal">${link}</div><button class="chip-x">✕</button>`;
+        el(".chip-x", mealRow).addEventListener("click", async (ev) => {
+          ev.stopPropagation();
+          await sb.from("meal_plan_entries").delete().eq("id", entry.id);
+          renderWeek();
+        });
+      } else {
+        mealRow.innerHTML = `<span class="meal-type">${MEAL_LABEL[type]}</span><div class="meal add">+ add ${MEAL_LABEL[type].toLowerCase()}</div>`;
+        el(".meal", mealRow).addEventListener("click", () => openMealModal(iso, DAYS[i], type));
+      }
+      row.appendChild(mealRow);
+    });
+
+    // "+ add another meal" — lets breakfast/lunch/snack get added when not already shown
+    const missing = MEAL_TYPES.filter((t) => !typesToShow.includes(t));
+    if (missing.length) {
+      const addMore = document.createElement("button");
+      addMore.className = "add-more-meal";
+      addMore.textContent = "+ add another meal";
+      addMore.addEventListener("click", () => openMealModal(iso, DAYS[i], missing[0]));
+      row.appendChild(addMore);
     }
+
     grid.appendChild(row);
   }
 }
 
 // ----- Add meal modal -----
 let mealModalDate = null;
-function openMealModal(iso, dayLabel) {
+function openMealModal(iso, dayLabel, defaultType) {
   mealModalDate = iso;
   $("meal-day-label").textContent = dayLabel;
   $("meal-freetext").value = "";
+  $("meal-type-select").value = defaultType || "dinner";
   const sel = $("meal-recipe-select");
   sel.innerHTML = '<option value="">— choose —</option>' +
     state.recipes.map((r) => `<option value="${r.id}">${esc(r.title)}</option>`).join("");
@@ -225,9 +250,10 @@ function openMealModal(iso, dayLabel) {
 $("btn-save-meal").addEventListener("click", async () => {
   const recipeId = $("meal-recipe-select").value || null;
   const freetext = $("meal-freetext").value.trim() || null;
+  const mealType = $("meal-type-select").value;
   if (!recipeId && !freetext) return;
   await sb.from("meal_plan_entries").insert({
-    household_id: state.household.id, date: mealModalDate,
+    household_id: state.household.id, date: mealModalDate, meal_type: mealType,
     recipe_id: recipeId, freetext: recipeId ? null : freetext, added_by: state.member.id,
   });
   closeModal();
