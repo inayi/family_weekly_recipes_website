@@ -412,6 +412,39 @@ $("btn-regen").addEventListener("click", async () => {
   renderShoppingList();
 });
 
+// ----- Settings (rename kitchen / your name) -----
+$("btn-settings").addEventListener("click", () => {
+  $("settings-hh-name").value = state.household.name;
+  $("settings-my-name").value = state.member.display_name;
+  $("settings-msg").textContent = "";
+  openModal("modal-settings");
+});
+
+$("btn-save-settings").addEventListener("click", async () => {
+  const newHhName = $("settings-hh-name").value.trim();
+  const newMyName = $("settings-my-name").value.trim();
+  if (!newHhName || !newMyName) { $("settings-msg").textContent = "Both fields are required."; return; }
+
+  $("settings-msg").textContent = "Saving…";
+
+  if (newHhName !== state.household.name) {
+    const { error } = await sb.from("households").update({ name: newHhName }).eq("id", state.household.id);
+    if (error) { $("settings-msg").textContent = error.message; return; }
+    state.household.name = newHhName;
+    $("hh-name").textContent = newHhName;
+  }
+
+  if (newMyName !== state.member.display_name) {
+    const { error } = await sb.from("members").update({ display_name: newMyName }).eq("id", state.member.id);
+    if (error) { $("settings-msg").textContent = error.message; return; }
+    state.member.display_name = newMyName;
+    $("who").textContent = " · " + newMyName;
+    _memberNames = null; // stale cache — refetch next time the shopping list renders "bought by"
+  }
+
+  closeModal();
+});
+
 // ----- Invite -----
 function inviteText() {
   const url = window.location.origin + window.location.pathname;

@@ -107,13 +107,24 @@ create policy hh_select on households for select
 drop policy if exists hh_insert on households;
 create policy hh_insert on households for insert
   with check ( auth.uid() is not null );
+-- rename a kitchen: only a member of that household can update it (e.g. its name).
+-- invite_code is included in "check" too, but the app never edits it via this path.
+drop policy if exists hh_update on households;
+create policy hh_update on households for update
+  using ( id in (select my_household_ids()) )
+  with check ( id in (select my_household_ids()) );
 
--- members: you can see members of your households; you can insert yourself.
+-- members: you can see members of your households; you can insert yourself;
+-- you can only update your own row (e.g. your display name), never someone else's.
 drop policy if exists mem_select on members;
 create policy mem_select on members for select
   using ( household_id in (select my_household_ids()) );
 drop policy if exists mem_insert on members;
 create policy mem_insert on members for insert
+  with check ( user_id = auth.uid() );
+drop policy if exists mem_update on members;
+create policy mem_update on members for update
+  using ( user_id = auth.uid() )
   with check ( user_id = auth.uid() );
 
 -- Generic household-scoped policies for the content tables.

@@ -49,6 +49,7 @@
         </div>
         <div class="topbar-actions">
           <button id="btn-invite" class="ghost" title="Invite your partner">Invite</button>
+          <button id="btn-settings" class="ghost" title="Rename your kitchen or your name">Settings</button>
           <a href="./help.html" class="muted">How it works</a>
           <a href="#" id="link-signout-2" class="muted">Switch kitchen</a>
         </div>
@@ -143,6 +144,20 @@
       <p id="invite-copy-msg" class="muted center"></p>
       <div class="modal-actions">
         <button class="primary" data-close>Done</button>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div id="modal-settings" class="modal hidden">
+      <h2>Settings</h2>
+      <label for="settings-hh-name">Kitchen name</label>
+      <input id="settings-hh-name" type="text" placeholder="Our Kitchen" />
+      <label for="settings-my-name">Your name</label>
+      <input id="settings-my-name" type="text" placeholder="Your name" />
+      <p id="settings-msg" class="muted"></p>
+      <div class="modal-actions">
+        <button class="ghost" data-close>Cancel</button>
+        <button id="btn-save-settings" class="primary">Save</button>
       </div>
     </div>
   </div>
