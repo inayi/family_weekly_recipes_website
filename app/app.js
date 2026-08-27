@@ -302,15 +302,22 @@ $("btn-save-recipe").addEventListener("click", async () => {
 });
 
 // Parse "2 onion" / "1 tbsp soy sauce" / "salmon"
+// Lines that are recipe metadata, not ingredients — e.g. pasted straight from
+// a site's "Ingredients" block along with its yield/serving/time header.
+const NON_INGREDIENT_LINE = /^(yield|serves?|servings?|makes|prep(aration)? time|cook(ing)? time|total time|notes?|ingredients?:?|directions?|instructions?|nutrition.*)\b/i;
+const SERVINGS_RANGE = /^\d+\s*[-–to]+\s*\d+\s*(servings?|people|portions?)?$/i;
+
 function parseIngredients(text) {
-  return text.split("\n").map((line) => line.trim()).filter(Boolean).map((line) => {
-    const parts = line.split(/\s+/);
-    let quantity = null, unit = null;
-    if (parts.length && /^\d+(\.\d+)?$/.test(parts[0])) { quantity = parseFloat(parts.shift()); }
-    if (quantity !== null && parts.length && UNITS.includes(parts[0].toLowerCase())) { unit = parts.shift().toLowerCase(); }
-    const name = parts.join(" ").toLowerCase();
-    return { name: name || line.toLowerCase(), quantity, unit, category: guessCategory(name) };
-  });
+  return text.split("\n").map((line) => line.trim()).filter(Boolean)
+    .filter((line) => !NON_INGREDIENT_LINE.test(line) && !SERVINGS_RANGE.test(line))
+    .map((line) => {
+      const parts = line.split(/\s+/);
+      let quantity = null, unit = null;
+      if (parts.length && /^\d+(\.\d+)?$/.test(parts[0])) { quantity = parseFloat(parts.shift()); }
+      if (quantity !== null && parts.length && UNITS.includes(parts[0].toLowerCase())) { unit = parts.shift().toLowerCase(); }
+      const name = parts.join(" ").toLowerCase();
+      return { name: name || line.toLowerCase(), quantity, unit, category: guessCategory(name) };
+    });
 }
 function guessCategory(name) {
   const n = name.toLowerCase();
